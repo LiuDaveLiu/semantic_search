@@ -1,0 +1,12 @@
+name: "Baseline (MiniLM-L6)"
+
+data:
+  version: "small"
+  locale: "us"
+  sample_frac: null
+
+pipeline:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  index_type: "flat"
+  use_reranker: false
+  text_strategy: "basic"

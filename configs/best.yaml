@@ -1,0 +1,13 @@
+name: "Best (MiniLM-L12 + Enhanced + Reranker)"
+
+data:
+  version: "small"
+  locale: "us"
+  sample_frac: null
+
+pipeline:
+  embedding_model: "sentence-transformers/all-MiniLM-L12-v2"
+  index_type: "ivf"
+  use_reranker: true
+  reranker_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  text_strategy: "enhanced"
