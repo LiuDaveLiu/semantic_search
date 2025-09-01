@@ -1,4 +1,4 @@
-name: "Best (MiniLM-L6 + Enhanced + Reranker)"
+name: "Best (MiniLM-L6 + Reranker)"
 
 data:
   version: "small"
@@ -10,4 +10,4 @@ pipeline:
   index_type: "ivf"
   use_reranker: true
   reranker_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
-  text_strategy: "enhanced"
+  text_strategy: "basic"

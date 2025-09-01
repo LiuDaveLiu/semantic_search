@@ -36,7 +36,8 @@ def run_single_experiment(config: Dict[str, Any], args: argparse.Namespace) -> D
     
     metrics = pipeline.run_full_pipeline(
         version=config.get('data', {}).get('version', 'small'),
-        sample_frac=sample_frac
+        sample_frac=sample_frac,
+        save_index=True
     )
     
     metrics['runtime_seconds'] = time.time() - start_time

@@ -31,7 +31,7 @@ def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Di
         'text_strategy': 'basic'
     }
     pipeline1 = SemanticSearchPipeline(config1)
-    metrics1 = pipeline1.run_full_pipeline('small', sample_frac)
+    metrics1 = pipeline1.run_full_pipeline('small', sample_frac, True)
     metrics1['name'] = config1['name']
     results.append(metrics1)
     print(f"Result: MRR = {metrics1['MRR']:.4f}")
@@ -46,7 +46,7 @@ def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Di
         'text_strategy': 'enhanced'
     }
     pipeline2 = SemanticSearchPipeline(config2)
-    metrics2 = pipeline2.run_full_pipeline('small', sample_frac)
+    metrics2 = pipeline2.run_full_pipeline('small', sample_frac, True)
     metrics2['name'] = config2['name']
     results.append(metrics2)
     print(f"Result: MRR = {metrics2['MRR']:.4f}")
@@ -61,7 +61,7 @@ def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Di
         'text_strategy': 'enhanced'
     }
     pipeline3 = SemanticSearchPipeline(config3)
-    metrics3 = pipeline3.run_full_pipeline('small', sample_frac)
+    metrics3 = pipeline3.run_full_pipeline('small', sample_frac, True)
     metrics3['name'] = config3['name']
     results.append(metrics3)
     print(f"Result: MRR = {metrics3['MRR']:.4f}")
@@ -76,7 +76,7 @@ def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Di
         'text_strategy': 'enhanced'
     }
     pipeline4 = SemanticSearchPipeline(config4)
-    metrics4 = pipeline4.run_full_pipeline('small', sample_frac)
+    metrics4 = pipeline4.run_full_pipeline('small', sample_frac, True)
     metrics4['name'] = config4['name']
     results.append(metrics4)
     print(f"Result: MRR = {metrics4['MRR']:.4f}")
