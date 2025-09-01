@@ -40,33 +40,27 @@ python main.py --optimize
 python main.py --config configs/best.yaml
 ```
 
-# Or use the notebook for interactive exploration
+### Or use the notebook for interactive exploration
 ./notebooks/experiment.ipynb
 
-## Final Pipeline
+# Final Pipeline
 Query → Embedding → FAISS Search (top 50) → Cross-Encoder Rerank → Top 10 Results
 
-# Components
+### Components
 
-Embedding Function
-
-Model: sentence-transformers/all-MiniLM-L6-v2
-Dimension: 384
+Embedding Function \
+Model: sentence-transformers/all-MiniLM-L6-v2 \
+Dimension: 384 \
 Normalized for cosine similarity
 
-
-Vector Index
-
-Type: FAISS IVF (Inverted File Index)
-Clusters: 256
+Vector Index \
+Type: FAISS IVF (Inverted File Index) \
+Clusters: 256 \
 Metric: Inner Product (cosine similarity)
 
-
-Reranker
-
-Model: cross-encoder/ms-marco-MiniLM-L-6-v2
-Reranks top 50 candidates
-
+Reranker \
+Model: cross-encoder/ms-marco-MiniLM-L-6-v2 \
+Reranks top 50 candidates 
 
 ## Features
 The dataset of products and search queries are derived from Amazon's esci-data dataset. It contains iterations of different approaches to improve search performance
