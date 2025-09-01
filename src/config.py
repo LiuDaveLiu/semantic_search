@@ -18,7 +18,7 @@ class Config:
     DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     USE_FP16 = torch.cuda.is_available()
     
-    # Model configurations (RTX 4060 optimized)
+    # Model configurations
     MODEL_CONFIGS = {
         'all-MiniLM-L6-v2': {
             'batch_size': 384,
@@ -34,16 +34,6 @@ class Config:
             'batch_size': 384,
             'dimension': 384,
             'max_seq_length': 256
-        },
-        'multi-qa-distilbert-cos-v1': {
-            'batch_size': 256,
-            'dimension': 768,
-            'max_seq_length': 256
-        },
-        'all-mpnet-base-v2': {
-            'batch_size': 128,  # Reduced for RTX 4060
-            'dimension': 768,
-            'max_seq_length': 384
         }
     }
     

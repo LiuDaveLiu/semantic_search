@@ -3,11 +3,8 @@ import numpy as np
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from tqdm.auto import tqdm
-import logging
 
 from src.config import Config
-
-logger = logging.getLogger(__name__)
 
 class ESCIDataLoader:
     """Load and preprocess ESCI dataset"""
@@ -19,9 +16,7 @@ class ESCIDataLoader:
         self.df_merged = None
         
     def load_raw_data(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Load raw parquet files"""
-        logger.info("Loading ESCI dataset...")
-        
+        """Load raw parquet files"""       
         examples_path = self.data_path / 'shopping_queries_dataset_examples.parquet'
         products_path = self.data_path / 'shopping_queries_dataset_products.parquet'
         
@@ -33,7 +28,6 @@ class ESCIDataLoader:
         self.df_examples = pd.read_parquet(examples_path, engine='pyarrow')
         self.df_products = pd.read_parquet(products_path, engine='pyarrow')
         
-        logger.info(f"Loaded {len(self.df_examples):,} examples, {len(self.df_products):,} products")
         return self.df_examples, self.df_products
     
     def prepare_dataset(self, 
@@ -44,7 +38,6 @@ class ESCIDataLoader:
         if self.df_examples is None:
             self.load_raw_data()
         
-        logger.info("Merging datasets...")
         df_merged = pd.merge(
             self.df_examples,
             self.df_products,
@@ -60,10 +53,8 @@ class ESCIDataLoader:
         # Sample if requested
         if sample_frac:
             df_merged = df_merged.sample(frac=sample_frac, random_state=42)
-            logger.info(f"Using {sample_frac*100:.0f}% sample: {len(df_merged):,} rows")
         
         self.df_merged = df_merged
-        logger.info(f"Dataset ready: {len(df_merged):,} rows")
         return df_merged
     
     def get_splits(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -134,8 +125,6 @@ class ESCIDataLoader:
         4. Better field ordering
         """
         product_texts = {}
-        
-        logger.info("Using ENHANCED text preparation strategy...")
         
         for _, row in tqdm(df_products.iterrows(), total=len(df_products), desc="Processing (enhanced)"):
             text_parts = []

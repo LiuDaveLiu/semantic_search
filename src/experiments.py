@@ -1,10 +1,7 @@
-import logging
 from typing import Dict, List, Optional
 import pandas as pd
 
 from src.pipeline import SemanticSearchPipeline
-
-logger = logging.getLogger(__name__)
 
 def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Dict]:
     """
@@ -13,13 +10,13 @@ def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Di
     Improvements:
     - Reranker: 0.5979
     - Enhanced text + Reranker: 0.6055
-    - QA models: 0.5269
-    - Deeper models: 0.5029
+    - QA models + Enhanced text + Reranker: 0.5878
+    - Deeper models + Enhanced text + Reranker: 0.6050
     """
     
     print("\n" + "="*70)
     print("OPTIMIZATION EXPERIMENTS")
-    print("Baseline MRR: 0.488 - Targeting 0.60+")
+    print("Baseline MRR: 0.4887")
     print("="*70)
     
     results = []
@@ -90,7 +87,7 @@ def run_optimization_experiments(sample_frac: Optional[float] = None) -> List[Di
     print("="*70)
     
     df = pd.DataFrame(results)
-    print(df[['name', 'Hits@1', 'Hits@5', 'Hits@10', 'MRR', 'NDCG@10']].to_string(index=False))
+    print(df[['name', 'Hits@1', 'Hits@5', 'Hits@10', 'MRR']].to_string(index=False))
     
     # Best configuration
     best_idx = df['MRR'].idxmax()

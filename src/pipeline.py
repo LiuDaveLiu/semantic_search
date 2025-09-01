@@ -1,8 +1,6 @@
 import time
 from typing import Dict, List, Optional, Any
-import logging
 import torch
-import gc
 
 from src.config import Config
 from src.data_loader import ESCIDataLoader
@@ -10,8 +8,6 @@ from src.embeddings import GPUEmbeddingEngine
 from src.indexing import VectorIndex
 from src.reranking import Reranker
 from src.evaluation import Evaluator
-
-logger = logging.getLogger(__name__)
 
 class SemanticSearchPipeline:
     """Complete semantic search pipeline"""
@@ -55,15 +51,12 @@ class SemanticSearchPipeline:
     
     def prepare_data(self, version: str = 'small', sample_frac: Optional[float] = None):
         """Load and prepare data"""
-        logger.info("Preparing data...")
         self.df_merged = self.data_loader.prepare_dataset(version, 'us', sample_frac)
         self.df_train, self.df_test = self.data_loader.get_splits()
         self.unique_products = self.data_loader.get_unique_products()
     
     def build_index(self, cache_key: Optional[str] = None):
         """Build product index"""
-        logger.info(f"Building index with {self.text_strategy} text strategy...")
-        
         # Prepare texts with selected strategy
         self.product_texts = self.data_loader.prepare_product_texts(
             self.unique_products,
@@ -104,9 +97,7 @@ class SemanticSearchPipeline:
         return results
     
     def evaluate(self, batch_size: int = 50) -> Dict[str, float]:
-        """Evaluate on test set"""
-        logger.info("Evaluating...")
-        
+        """Evaluate on test set"""       
         # Get test data
         test_queries = self.data_loader.get_test_queries(self.df_test)
         ground_truth = self.data_loader.get_ground_truth(self.df_test)

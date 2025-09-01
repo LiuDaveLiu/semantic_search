@@ -6,14 +6,10 @@ import gc
 from pathlib import Path
 import pickle
 import hashlib
-import json
 import time
 from tqdm.auto import tqdm
-import logging
 
 from src.config import Config
-
-logger = logging.getLogger(__name__)
 
 class GPUEmbeddingEngine:
     """GPU-accelerated embedding generation with persistent caching"""
@@ -32,7 +28,6 @@ class GPUEmbeddingEngine:
         self.model_cache_dir.mkdir(exist_ok=True, parents=True)
         
         # Load model
-        logger.info(f"Loading {model_name} on {self.device}")
         self.model = SentenceTransformer(model_name, device=self.device)
         
         # Get configuration
@@ -46,7 +41,6 @@ class GPUEmbeddingEngine:
         self.model.max_seq_length = self.config['max_seq_length']
         self.batch_size = self.config['batch_size']
         
-        logger.info(f"Model ready: dim={self.config['dimension']}, batch={self.batch_size}")
         self._print_cache_status()
     
     def _get_cache_key(self, texts: List[str], prefix: str = "embeddings") -> str:
@@ -83,13 +77,11 @@ class GPUEmbeddingEngine:
         cache_path = self.model_cache_dir / f"{cache_key}.pkl"
         
         if use_cache and cache_path.exists():
-            logger.info(f"Loading cached embeddings from {cache_path}")
             with open(cache_path, 'rb') as f:
                 return pickle.load(f)
         
         # Generate embeddings
         batch_size = batch_size or self.batch_size
-        logger.info(f"Encoding {len(texts):,} texts (batch_size={batch_size})")
         
         # Clear GPU cache
         if self.device == 'cuda':
@@ -119,11 +111,9 @@ class GPUEmbeddingEngine:
                 )
             
             encoding_time = time.time() - start_time
-            logger.info(f"Encoded in {encoding_time:.1f}s ({len(texts)/encoding_time:.0f} texts/sec)")
             
         except RuntimeError as e:
             if "out of memory" in str(e):
-                logger.warning(f"GPU OOM! Reducing batch size from {batch_size} to {batch_size//2}")
                 torch.cuda.empty_cache()
                 gc.collect()
                 
@@ -134,7 +124,6 @@ class GPUEmbeddingEngine:
         
         # Save to cache
         if use_cache:
-            logger.info(f"Saving embeddings to {cache_path}")
             with open(cache_path, 'wb') as f:
                 pickle.dump(embeddings, f, protocol=4)
         
@@ -161,4 +150,3 @@ class GPUEmbeddingEngine:
         cache_files = list(self.model_cache_dir.glob("*.pkl"))
         for f in cache_files:
             f.unlink()
-        logger.info(f"Cleared {len(cache_files)} cache files")
